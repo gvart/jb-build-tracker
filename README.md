@@ -96,4 +96,5 @@ some in depth things I left incomplete on purpose (and wrote comments how I'd ha
 4. Assuming that we have authentication service, I'd verify that user has access to register workflows for a specific projectKey
 5. I'd add some ore API endpoints, so customer can update and delete registered workflows.
 6. Sanitize options and remove unused parameters
+7. Improve API documentation
  
