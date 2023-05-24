@@ -1,9 +1,9 @@
 # JB Build Tracker
 This application is responsible to keep track of registered CI/CD workflows and 
-allow customers to trigger of workflow using a webhook or on a scheduled base.
+allow customers to trigger workflows using a webhook or scheduled base.
 
 Application follow **clean architecture principles** and the use-cases, with gateway and domain objects are stored in [domain](domain) module
-and actual implementation is stored in [infrastructure](infrastructure) together with endpoints.
+and actual implementation is stored in [infrastructure](infrastructure) together with entrypoint.
 
 ## Domain object explained:
 [WorkflowRegistration.kt](domain/src/main/kotlin/md/gvart/buildtracker/domain/entity/WorkflowRegistration.kt)
@@ -19,11 +19,36 @@ and actual implementation is stored in [infrastructure](infrastructure) together
 ## Hot to run and test locally
 Application provides two endpoints (can be accessed on [Swagger-UI](http://localhost:8080/documentation)):
 - [POST] `/api/v1/workflows` to register a workflow
+  - Example of request of on commit webhook:
+    ```json
+    {
+       "projectKey": "key",
+       "repositoryUrl": "repositoryUrl",
+       "branches": ["master"],
+       "pipelineFileName": "pipelineFileName",
+       "triggerType": "ON_COMMIT"
+    }
+    ```
+  - Example request for scheduled job which runs every 30 seconds 
+    ```json
+    {
+      "projectKey": "key",
+      "repositoryUrl": "repositoryUrl",
+      "branches": [
+        "master"
+      ],
+      "pipelineFileName": "pipelineFileName",
+      "triggerType": "SCHEDULED",
+      "options": {
+        "cronExpression": "*/30 * * * * *"
+      }
+    }
+    ```
 - [GET] `/api/v1/workflows/webhook` to trigger a workflow
+  - Request example: `/api/v1/workflows/webhook?projectKey=key&branch=master&commitHash=ABCDEF`
 
 **To run application locally:**
-1. Start dependency services(DB and output queue) using `docker-compose up` in root folder
-2. Run application using [Bootstrap.kt](infrastructure/src/main/kotlin/md/gvart/buildtracker/Bootstrap.kt) class
+1. Run application using [Bootstrap.kt](infrastructure/src/main/kotlin/md/gvart/buildtracker/Bootstrap.kt) class, all dependency services will start automatically using docker due to `org.springframework.boot:spring-boot-docker-compose`
 
 ## Reflections about selected approaches
 
@@ -60,5 +85,7 @@ some in depth things I left incomplete on purpose (and wrote comments how I'd ha
 1. Add more validations steps
 2. Allow customers to create scheduled build using  Intervals(i.e. P5D), Date Time, etc.
 3. Add more metrics to track SLA,configure monitoring and tracking using micrometer and push all these metrics to DataDog/Prometheus/Elasticsearch
-4. Assuming that we have authentication service, I'd verify that user has access to register workflows for a specific projectKey 
+4. Assuming that we have authentication service, I'd verify that user has access to register workflows for a specific projectKey
+5. I'd add some ore API endpoints, so customer can update and delete registered workflows.
+6. Sanitize options and remove unused parameters
  

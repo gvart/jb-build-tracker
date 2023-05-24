@@ -1,11 +1,8 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") apply false
     kotlin("jvm") apply false
-    kotlin("plugin.spring") apply false
     id("com.diffplug.spotless")
-
     jacoco
     java
 }

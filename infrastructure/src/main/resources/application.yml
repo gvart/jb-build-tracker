@@ -1,0 +1,24 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/workflows
+  cloud:
+    aws:
+      region:
+        static: us-east-1
+      endpoint: http://localhost:4566
+
+application:
+  destination:
+    queue-name: main.fifo
+
+org:
+  jobrunr:
+    database:
+      database-name: workflow_jobs
+    background-job-server:
+      enabled: true
+
+springdoc:
+  swagger-ui:
+    path: /documentation

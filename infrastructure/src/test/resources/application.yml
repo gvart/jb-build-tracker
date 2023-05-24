@@ -1,0 +1,18 @@
+spring:
+  cloud:
+    aws:
+      region:
+        static: us-east-1
+      endpoint: http://localhost:4566
+
+application:
+  destination:
+    queue-name: main.fifo
+
+org:
+  jobrunr:
+    database:
+      database-name: workflow_jobs
+    background-job-server:
+      enabled: false
+
