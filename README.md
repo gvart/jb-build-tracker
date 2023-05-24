@@ -5,6 +5,14 @@ allow customers to trigger workflows using a webhook or scheduled base.
 Application follow **clean architecture principles** and the use-cases, with gateway and domain objects are stored in [domain](domain) module
 and actual implementation is stored in [infrastructure](infrastructure) together with entrypoint.
 
+## Tech stack
+* Kotlin
+* Spring boot 3.1
+* MongoDB
+* SQS
+* Docker
+* Testcontainers
+
 ## Domain object explained:
 [WorkflowRegistration.kt](domain/src/main/kotlin/md/gvart/buildtracker/domain/entity/WorkflowRegistration.kt)
 
